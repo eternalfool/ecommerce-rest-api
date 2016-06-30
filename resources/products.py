@@ -1,0 +1,140 @@
+from sqlalchemy.exc import SQLAlchemyError
+from flask_restful import Resource, marshal_with, fields, reqparse, request
+import traceback
+from flask import jsonify, g
+from models import db, auth
+from models import Product
+import logging
+
+logger = logging.getLogger(__name__)
+
+output_fields = {
+    'id': fields.Integer,
+    'name': fields.String,
+    'seller_id': fields.Integer,
+    'description1': fields.String,
+    'description2': fields.String,
+    'sku_id': fields.String,
+    'price': fields.String,
+    'image_urls': fields.String,
+    'video_urls': fields.String,
+    'discount': fields.String,
+    'coupons': fields.String,
+    'available_colors': fields.String,
+    'weight': fields.String,
+    'is_active': fields.Boolean,
+    'creation_date': fields.DateTime,
+    'last_update': fields.DateTime
+}
+
+parser = reqparse.RequestParser()
+
+
+# pagination
+# parser.add_argument('limit', type=int)
+# parser.add_argument('offset', type=int)
+
+class Products(Resource):
+    @auth.login_required
+    @marshal_with(output_fields, envelope='data')
+    def get(self):
+        logger.debug("-----------Recieved request: %r-----------" % request.data)
+        parser.add_argument('id', type=int, location='args')
+        parser.add_argument('include_inactive', type=bool, location='args')
+        args = parser.parse_args()
+        seller_id = g.seller.id
+        product_id = args['id']
+        include_inactive = args['include_inactive']
+
+        if product_id and include_inactive:
+            products = Product.query.filter_by(id=product_id).filter_by(
+                seller_id=seller_id).all()
+        elif product_id and not include_inactive:
+            products = Product.query.filter_by(id=product_id).filter_by(
+                seller_id=seller_id).filter(
+                Product.is_active).all()
+        elif not product_id and include_inactive:
+            products = Product.query.filter_by(seller_id=seller_id).all()
+        else:
+            products = Product.query.filter(Product.is_active).filter_by(
+                seller_id=seller_id).all()
+        return products
+
+    @auth.login_required
+    def update_product(self, id, args):
+        product_to_be_updated = Product.query.get(id)
+        if not product_to_be_updated:
+            return {"isSuccessful": False, "error": "No product with id = %s" % id}, 401
+        for key, value in args.items():
+            if value:
+                setattr(product_to_be_updated, key, value)
+        try:
+            db.session.commit()
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            logger.error(e)
+            return {"isSuccessful": False, "error": str(e)}, 401
+
+        return {"id": id, "isSuccessful": True}, 202
+
+    @auth.login_required
+    def delete(self):
+        parser.add_argument('id', type=int, location='args', required=True,
+                            help='You must specify the product_id to delete')
+        args = parser.parse_args()
+        id = args['id']
+        product_to_be_updated = Product.query.get(id)
+        if not product_to_be_updated:
+            return {"error": "No product with id = %s" % id, "isSuccessful": False}, 401
+        product_to_be_updated.is_active = False
+        try:
+            db.session.commit()
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            logger.error(e)
+            return {"error": str(e), "isSuccessful": False}, 401
+        return jsonify({"isSuccessful": True})
+
+    @auth.login_required
+    def post(self):
+        logger.debug(request.data)
+        parser.add_argument('id', type=int, location='json')
+        parser.add_argument('name', type=str, location='json')
+        parser.add_argument('description1', type=str, location='json')
+        parser.add_argument('description2', type=str, location='json')
+        parser.add_argument('sku_id', type=str, location='json')
+        parser.add_argument('price', type=str, location='json')
+        parser.add_argument('image_urls', type=str, location='json')
+        parser.add_argument('video_urls', type=str, location='json')
+        parser.add_argument('discount', type=str, location='json')
+        parser.add_argument('coupons', type=str, location='json')
+        parser.add_argument('available_colors', type=str, location='json')
+        parser.add_argument('weight', type=str, location='json')
+        args = parser.parse_args()
+        args['seller_id'] = g.seller.id
+        id = args['id']
+        if id:
+            return self.update_product(id, args)
+        else:
+            return self.create_product(args)
+
+    def create_product(self, args):
+        if args['name'] is None:
+            return {"isSuccessful": False, "error": "You must specify the name"}, 401
+        product = Product(name=args['name'], seller_id=args['seller_id'],
+                          description1=args['description1'],
+                          description2=args['description2'], sku_id=args['sku_id'],
+                          price=args['price'],
+                          image_urls=args['image_urls'], video_urls=args['video_urls'],
+                          discount=args['discount'],
+                          coupons=args['coupons'],
+                          available_colors=args['available_colors'],
+                          weight=args['weight'])
+        try:
+            db.session.add(product)
+            db.session.commit()
+            return {"id": product.id, "isSuccessful": True}, 202
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            logger.error(e)
+            return {"error": str(e), "isSuccessful": False}, 401

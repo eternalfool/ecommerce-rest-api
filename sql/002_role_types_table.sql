@@ -1,10 +1,10 @@
-use ecommerce_db;
+use test_ecommerce_db;
 
 create table role_types
 (
     id                 INT             NOT NULL AUTO_INCREMENT,
     role               VARCHAR(255)    NOT NULL,
-    is_active          BOOLEAN                 ,
+    is_active                 BOOLEAN NOT NULL DEFAULT true,
     PRIMARY KEY(id)
 ) ENGINE = INNODB DEFAULT CHARSET = utf8;
 
@@ -24,3 +24,7 @@ FOR EACH ROW BEGIN
     SET NEW.last_update  =  NOW();
 END;//
 delimiter ;
+
+
+INSERT INTO role_types(role) VALUES("SELLER");
+INSERT INTO role_types(role) VALUES("ADMIN");

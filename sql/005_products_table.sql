@@ -1,4 +1,4 @@
-use ecommerce_db;
+use test_ecommerce_db;
 
 create table products
 (
@@ -13,9 +13,9 @@ create table products
     video_urls         TEXT    		           ,
     discount           VARCHAR(10)             ,
     coupons            VARCHAR(100)            ,
-    availible_colors   TEXT                    ,
+    available_colors   TEXT                    ,
     weight             VARCHAR(10)             ,
-    is_active          BOOLEAN                 ,
+    is_active                 BOOLEAN NOT NULL DEFAULT true,
     PRIMARY KEY(id),
     FOREIGN KEY (seller_id) REFERENCES sellers(id)
 

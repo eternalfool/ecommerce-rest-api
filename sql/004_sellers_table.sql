@@ -1,16 +1,17 @@
-use ecommerce_db;
+use test_ecommerce_db;
 
 create table sellers
 (
     id                 INT             NOT NULL AUTO_INCREMENT,
-    seller_id            INT             NOT NULL,
+    user_id            INT             NOT NULL,
     name               TEXT            NOT NULL,
     contact_name       VARCHAR(255)            ,
     contact_number     VARCHAR(30)             ,
     email_id           VARCHAR(255)            ,
-    is_active          BOOLEAN                 ,
+    is_active                 BOOLEAN NOT NULL DEFAULT true,
     PRIMARY KEY(id),
-    FOREIGN KEY (seller_id) REFERENCES sellers(id)
+    UNIQUE(user_id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
 ) ENGINE = INNODB DEFAULT CHARSET = utf8;
 
 ALTER TABLE sellers ADD COLUMN creation_date DATETIME;

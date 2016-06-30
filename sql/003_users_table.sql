@@ -1,13 +1,14 @@
-use ecommerce_db;
+use test_ecommerce_db;
 
 create table users
 (
     id                 INT             NOT NULL AUTO_INCREMENT,
     role_type_id       INT             NOT NULL,
     username           VARCHAR(255)    NOT NULL,
-    api_token          TEXT            NOT NULL,
-    is_deleted         BOOLEAN                 ,
+    password_hash      TEXT            NOT NULL,
+    is_active                 BOOLEAN NOT NULL DEFAULT true,
     PRIMARY KEY(id),
+    UNIQUE(username),
     FOREIGN KEY (role_type_id) REFERENCES role_types(id)
 
 ) ENGINE = INNODB DEFAULT CHARSET = utf8;
