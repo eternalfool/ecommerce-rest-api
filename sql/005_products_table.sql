@@ -1,4 +1,4 @@
-use test_ecommerce_db;
+use ecommerce_db;
 
 create table products
 (

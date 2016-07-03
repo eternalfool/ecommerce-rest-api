@@ -38,23 +38,6 @@ class Sellers(Resource):
             sellers = Seller.query.filter(Seller.is_active).all()
         return sellers
 
-    def delete(self):
-        parser.add_argument('id', type=int, location='json', required=True,
-                            help='You must specify the product_id to delete')
-        args = parser.parse_args()
-        id = args['id']
-        product_to_be_updated = Seller.query.get(id)
-        if not product_to_be_updated:
-            return {"error": "No product with id = %s" % id, "isSuccessful": False}, 401
-        product_to_be_updated.is_active = False
-        try:
-            db.session.commit()
-        except SQLAlchemyError as e:
-            db.session.rollback()
-            logger.exception("Error while deleting")
-            return {"error": str(e), "isSuccessful": False}, 401
-        return {"isSuccessful": True}
-
     def post(self):
         logger.debug("in post of create seller")
         logger.debug("info : in post of create seller")

@@ -53,7 +53,7 @@ python run.py
 
 ### Schema Design
 
-![Schema Design](http://imgur.com/BHad7Ys)
+![Schema Design](https://cloud.githubusercontent.com/assets/5109996/16544181/087eb2c0-4119-11e6-9892-afbb2f4c648c.png)
 
 ### Usage
 
@@ -241,4 +241,5 @@ Change the path for the nginx conf mounting path to your full path, not mine!
    [Mysql]: <https://www.mysql.com/>
    [Sqlalchemy]: <http://www.sqlalchemy.org/>
    [@thomasfuchs]: <http://twitter.com/thomasfuchs>
+
 

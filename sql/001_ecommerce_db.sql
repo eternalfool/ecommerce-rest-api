@@ -1,1 +1,1 @@
-CREATE DATABASE IF NOT EXISTS test_ecommerce_db;
+CREATE DATABASE IF NOT EXISTS ecommerce_db;
