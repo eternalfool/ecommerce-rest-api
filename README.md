@@ -1,18 +1,19 @@
-# ecommerce-rest-api
+# Ecommerce-rest-api
 
-ecommerce-rest-api is an authenticated rest api which supports CRUD operation of products and sellers.
+Ecommerce-rest-api is an authenticated rest api which supports CRUD operation of products and sellers.
 
-  - Type some Markdown on the left
-  - See HTML in the right
-  - Magic
+**Endpoints**
 
-You can also:
-  - Create a Seller
-  - Update seller info
-  - Add products
-  - Modify Products
-  - Get products
-  - Delete products
+| HTTP     | Path           | Action  | Used for|
+| ------------- |:-------------:| -----:|-----:|
+| POST      | /sellers | create | creating a seller |
+| POST      | /sellers      |   update |  update the seller mentioning the id |
+| GET | /sellers      |    get |    get seller details |
+| GET | /token      |    get |    get token for seller |
+| POST      | /products | get | get product details |
+| POST      | /products      |   create |  create a new product |
+| POST | /products      |    update |    updating an existing product specifying id |
+| DELETE | /products      |    delete |    delete product specifying id |
 
 ### Tech
 
@@ -23,7 +24,7 @@ Dillinger uses a number of open source projects to work properly:
 * Other flask extensions mentioned in requirements.
 
 ### Installation
-Run setup.py
+
 
 ```sh
 $ git clone  https://github.com/eternalfool/ecommerce-rest-api.git
@@ -56,7 +57,7 @@ python run.py
 
 ### Usage
 
-**Make a post request to /sellers to create a new seller**
+**Post request to /sellers to create a new seller**
 
     curl http://0.0.0.0:5000/sellers -j -H "Content-Type: application/json" --data '{"username": "shashwat", "password":"shashwat", "name": "brotherNero"}'
 
@@ -64,12 +65,12 @@ Response:
 
     { "id": 44, "isSuccessful": true}
 
-**get api-token for the user**
+**Get api-token for the seller**
 
     curl -u shashwat:shashwat "http://0.0.0.0:5000/token"
 
 
-
+***Note:*** Passing just the username without the colon (`:`) will cause you to be prompted for your account password. This avoids having your password in your command line history
 Response:
 
     { "token": "eyJhbGciOiJIUzI1NiIsImV4cCI6MTQ2ODAwNDg2MiwiaWF0IjoxNDY3NDA0ODYyfQ.eyJpZCI6Mzd9.bxhrdVc-KSRbbirv_BG0PnHUdewCy0_mkeeTe7k3sOc"}
@@ -79,7 +80,7 @@ Response:
 
     curl -X POST -H "Content-Type: application/json" -u shashwat:shashwat -d @./create_product.json "http://0.0.0.0:5000/products" 
 
-Contents of create_product.json
+***Contents of create_product.json***
 
     {
 	"name": "Lifebouy",
@@ -102,8 +103,8 @@ Response:
 **Make a post request update an existing product**
 
     curl -X POST -H "Content-Type: application/json" -u shashwat:shashwat -d @./update_product.json "http://0.0.0.0:5000/products" 
-'
-Contents of update_product.json
+
+***Contents of update_product.json***
 
     {
     "id": 41,
@@ -117,17 +118,16 @@ Contents of update_product.json
     "discount": "5.50",
     "coupons": "['DD50', 'FP40']",
     "available_colors": "['BLUE', '0x454']",
-    "weight": "75.46 gms"
-}
+    "weight": "75.46 gms" 
+    }
 
 Response:
 
     { "id": 41, "isSuccessful": true}
     
-**get request to get product details**
+**Get request to get product details**
 
     curl -u shashwat:shashwat "http://0.0.0.0:5000/products"
-
 
 Response:
 
@@ -170,55 +170,14 @@ Response:
 }
     
     
-    **delete a product**
+**Delete a product**
 
     curl -X DELETE -u shashwat:shashwat "http://0.0.0.0:5000/products?id=41" 
 
-
 Response:
 
     { "id": 44, "isSuccessful": true}
-    **Make a post request to /sellers to create a new seller**
 
-    curl http://0.0.0.0:5000/sellers -j -H "Content-Type: application/json" --data '{"username": "shashwat", "password":"shashwat", "name": "brotherNero"}'
-
-Response:
-
-    { "id": 44, "isSuccessful": true}
-    **Make a post request to /sellers to create a new seller**
-
-    curl http://0.0.0.0:5000/sellers -j -H "Content-Type: application/json" --data '{"username": "shashwat", "password":"shashwat", "name": "brotherNero"}'
-
-Response:
-
-    { "id": 44, "isSuccessful": true}
-    **Make a post request to /sellers to create a new seller**
-
-    curl http://0.0.0.0:5000/sellers -j -H "Content-Type: application/json" --data '{"username": "shashwat", "password":"shashwat", "name": "brotherNero"}'
-
-Response:
-
-    { "id": 44, "isSuccessful": true}
-    **Make a post request to /sellers to create a new seller**
-
-    curl http://0.0.0.0:5000/sellers -j -H "Content-Type: application/json" --data '{"username": "shashwat", "password":"shashwat", "name": "brotherNero"}'
-
-Response:
-
-    { "id": 44, "isSuccessful": true}
-    
-Includes HTTP-Header information in the output
-
-    curl --include https://api.github.com/users/caspyin
-
-Pass user credential to basic auth to access protected resources like a users starred gists, or private info associated with their profile
-
-    curl --user "caspyin:PASSWD" https://api.github.com/gists/starred
-    curl --user "caspyin:PASSWD" https://api.github.com/users/caspyin
-
-Passing just the username without the colon (`:`) will cause you to be prompted for your account password. This avoids having your password in your command line history
-
-    curl --user "caspyin" https://api.github.com/users/caspyin
 ### Development
 
 Want to contribute? Great!
@@ -282,20 +241,4 @@ Change the path for the nginx conf mounting path to your full path, not mine!
    [Mysql]: <https://www.mysql.com/>
    [Sqlalchemy]: <http://www.sqlalchemy.org/>
    [@thomasfuchs]: <http://twitter.com/thomasfuchs>
-   [df1]: <http://daringfireball.net/projects/markdown/>
-   [markdown-it]: <https://github.com/markdown-it/markdown-it>
-   [Ace Editor]: <http://ace.ajax.org>
-   [node.js]: <http://nodejs.org>
-   [Twitter Bootstrap]: <http://twitter.github.com/bootstrap/>
-   [keymaster.js]: <https://github.com/madrobby/keymaster>
-   [jQuery]: <http://jquery.com>
-   [@tjholowaychuk]: <http://twitter.com/tjholowaychuk>
-   [express]: <http://expressjs.com>
-   [AngularJS]: <http://angularjs.org>
-   [Gulp]: <http://gulpjs.com>
-
-   [PlDb]: <https://github.com/joemccann/dillinger/tree/master/plugins/dropbox/README.md>
-   [PlGh]:  <https://github.com/joemccann/dillinger/tree/master/plugins/github/README.md>
-   [PlGd]: <https://github.com/joemccann/dillinger/tree/master/plugins/googledrive/README.md>
-   [PlOd]: <https://github.com/joemccann/dillinger/tree/master/plugins/onedrive/README.md>
 
