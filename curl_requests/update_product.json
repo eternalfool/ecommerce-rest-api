@@ -1,0 +1,15 @@
+{
+    "id": 41,
+    "name": "Dettol",
+    "description1": "Dettol Dettol Dettol Dettol",
+    "description2": "Dettol Dettol Dettol Dettol Ho",
+    "sku_id": "SKU-96ghi7-UKS",
+    "price": "95.95",
+    "image_urls": "['http://www.dettol.co.in/media/1463092/Dettol-original-Soap-Packshot-300-X-600.jpg']",
+    "video_urls": "['https://www.youtube.com/watch?v=iiGAPr9Vl0U']",
+    "discount": "5.50",
+    "coupons": "['DD50', 'FP40']",
+    "available_colors": "['BLUE', '0x454']",
+    "weight": "75.46 gms"
+}
+

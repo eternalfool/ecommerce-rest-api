@@ -6,3 +6,7 @@ def get_auth_headers(username, password):
         'Authorization': 'Basic ' + b64encode(
             "{0}:{1}".format(username, password))
     }
+
+if __name__ == "__main__":
+    print get_auth_headers("admin", "admin")
+    print get_auth_headers("shashwat", "shashwat")

@@ -1,0 +1,10 @@
+create seller
+get token for seller
+get all products of seller
+get product by product_id
+get all products by admin
+get all products by product_id by admin
+creating a product
+updating a product
+deleting a product
+

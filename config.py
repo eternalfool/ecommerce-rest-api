@@ -4,10 +4,9 @@ import logging.config
 
 # default config
 class BaseConfig(object):
-    DEBUG = False
+    DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'mysql://root:@localhost/test_ecommerce_db'
     SECRET_KEY = 'eyJhbGciOiJIUzI1NiIsImV4cCI6MTQ2NzE0OTE4OCwiaWF0IjoxNDY3MTQ4NTg'
-    print SQLALCHEMY_DATABASE_URI
 
 
 class TestConfig(BaseConfig):
@@ -15,7 +14,6 @@ class TestConfig(BaseConfig):
     TESTING = True
     WTF_CSRF_ENABLED = False
     SQLALCHEMY_DATABASE_URI = 'mysql://root:@localhost/test_ecommerce_db'
-    print "are you in it for love?"
 
 
 def configure_logging(logging_ini):

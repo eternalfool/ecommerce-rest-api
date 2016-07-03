@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+
+import sys
+import os
+sys.path.append('..')
 from flask_testing import TestCase
 from base64 import b64encode
 from run import app
@@ -5,6 +10,8 @@ from models import User, db, Seller
 import json
 import time
 from common.utils import get_auth_headers
+import unittest
+
 
 
 class TestSeller(TestCase):
@@ -52,3 +59,7 @@ class TestSeller(TestCase):
         pass
         # db.session.remove()
         # db.drop_all()
+
+# runs the unit tests in the module
+if __name__ == '__main__':
+  unittest.main()

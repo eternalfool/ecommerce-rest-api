@@ -1,0 +1,5 @@
+Read log configurations from a file.
+Pagination on get_products.
+bulk creation / deletion of products.
+add more information to unauthorized requests (get token by invalid username, duplicate username while creating seller)
+

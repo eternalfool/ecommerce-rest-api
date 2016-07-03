@@ -72,26 +72,6 @@ class User(db.Model):
         return user
 
 
-@auth.verify_password
-def verify_password(username_or_token, password):
-    # first try to authenticate by token
-    user = User.verify_auth_token(username_or_token)
-    if not user:
-        # try to authenticate with username/password
-        user = User.query.filter_by(username=username_or_token).first()
-        if not user or not user.verify_password(password):
-            return False
-    g.user = user
-    # is user is admin, return true
-    if user.role_type_id == 2:
-        return True
-    seller = Seller.query.filter_by(user_id=user.id).first()
-    if not seller:
-        return False
-    g.seller = seller
-    return True
-
-
 class Seller(db.Model):
     __tablename__ = 'sellers'
     id = db.Column('id', db.Integer, primary_key=True)
@@ -112,3 +92,26 @@ class RoleType(db.Model):
     is_active = db.Column(db.Boolean)
     creation_date = db.Column('creation_date', db.DateTime)
     last_update = db.Column('last_update', db.DateTime)
+
+
+@auth.verify_password
+def verify_password(username_or_token, password):
+    # first try to authenticate by token
+    g.is_admin = False
+    user = User.verify_auth_token(username_or_token)
+    if not user:
+        # try to authenticate with username/password
+        user = User.query.filter_by(username=username_or_token).first()
+        if not user or not user.verify_password(password):
+            return False
+    g.user = user
+    # is user is admin, return true
+    admin_role_id = RoleType.query.filter_by(role="ADMIN").first().id
+    if user.role_type_id == admin_role_id:
+        g.is_admin = True
+        return True
+    seller = Seller.query.filter_by(user_id=user.id).first()
+    if not seller:
+        return False
+    g.seller = seller
+    return True

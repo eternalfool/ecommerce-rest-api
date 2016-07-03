@@ -1,4 +1,8 @@
+import sys
+import os
+sys.path.append('..')
 from flask_testing import TestCase
+import unittest
 from run import app
 from models import Product
 import json
@@ -142,3 +146,8 @@ class TestProducts(TestCase):
         # db.session.remove()
         # db.drop_all()
         pass
+
+# runs the unit tests in the module
+if __name__ == '__main__':
+  unittest.main()
+

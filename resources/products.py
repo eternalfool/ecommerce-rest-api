@@ -1,6 +1,5 @@
 from sqlalchemy.exc import SQLAlchemyError
 from flask_restful import Resource, marshal_with, fields, reqparse, request
-import traceback
 from flask import jsonify, g
 from models import db, auth
 from models import Product
@@ -8,7 +7,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-output_fields = {
+product_fields = {
     'id': fields.Integer,
     'name': fields.String,
     'seller_id': fields.Integer,
@@ -36,28 +35,41 @@ parser = reqparse.RequestParser()
 
 class Products(Resource):
     @auth.login_required
-    @marshal_with(output_fields, envelope='data')
+    @marshal_with(product_fields, envelope='data')
     def get(self):
-        logger.debug("-----------Recieved request: %r-----------" % request.data)
         parser.add_argument('id', type=int, location='args')
         parser.add_argument('include_inactive', type=bool, location='args')
         args = parser.parse_args()
-        seller_id = g.seller.id
         product_id = args['id']
         include_inactive = args['include_inactive']
 
-        if product_id and include_inactive:
-            products = Product.query.filter_by(id=product_id).filter_by(
-                seller_id=seller_id).all()
-        elif product_id and not include_inactive:
-            products = Product.query.filter_by(id=product_id).filter_by(
-                seller_id=seller_id).filter(
-                Product.is_active).all()
-        elif not product_id and include_inactive:
-            products = Product.query.filter_by(seller_id=seller_id).all()
-        else:
-            products = Product.query.filter(Product.is_active).filter_by(
-                seller_id=seller_id).all()
+        # user is Admin
+        if g.is_admin:
+            if product_id and include_inactive:
+                products = Product.query.filter_by(id=product_id).all()
+            elif product_id and not include_inactive:
+                products = Product.query.filter_by(id=product_id).filter(
+                    Product.is_active).all()
+            elif not product_id and include_inactive:
+                products = Product.query.filter(Product.is_active).all()
+            else:
+                # not product_id and not include_inactive:
+                products = Product.query.all()
+        else:  # user is not admin
+            seller_id = g.seller.id
+            if product_id and include_inactive:
+                products = Product.query.filter_by(id=product_id).filter_by(
+                    seller_id=seller_id).all()
+            elif product_id and not include_inactive:
+                products = Product.query.filter_by(id=product_id).filter_by(
+                    seller_id=seller_id).filter(
+                    Product.is_active).all()
+            elif not product_id and include_inactive:
+                products = Product.query.filter_by(seller_id=seller_id).all()
+            else:
+                # not product_id and not include_inactive
+                products = Product.query.filter(Product.is_active).filter_by(
+                    seller_id=seller_id).all()
         return products
 
     @auth.login_required
@@ -65,6 +77,8 @@ class Products(Resource):
         product_to_be_updated = Product.query.get(id)
         if not product_to_be_updated:
             return {"isSuccessful": False, "error": "No product with id = %s" % id}, 401
+        if product_to_be_updated.seller_id != g.seller.id:
+            return {"isSuccessful": False, "error": "Unauthorized access"}, 401
         for key, value in args.items():
             if value:
                 setattr(product_to_be_updated, key, value)
@@ -86,6 +100,8 @@ class Products(Resource):
         product_to_be_updated = Product.query.get(id)
         if not product_to_be_updated:
             return {"error": "No product with id = %s" % id, "isSuccessful": False}, 401
+        if product_to_be_updated.seller_id != g.seller.id:
+            return {"isSuccessful": False, "error": "Unauthorized access"}, 401
         product_to_be_updated.is_active = False
         try:
             db.session.commit()
@@ -93,7 +109,7 @@ class Products(Resource):
             db.session.rollback()
             logger.error(e)
             return {"error": str(e), "isSuccessful": False}, 401
-        return jsonify({"isSuccessful": True})
+        return { "id": id, "isSuccessful": True}
 
     @auth.login_required
     def post(self):

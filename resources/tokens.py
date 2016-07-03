@@ -1,16 +1,6 @@
-from flask_restful import Resource
-from sqlalchemy.exc import SQLAlchemyError
-from flask_restful import Api
-from flask_restful import Resource
-from sqlalchemy.exc import SQLAlchemyError
-from flask_restful import Api
-from flask_restful import Resource, marshal_with, fields, reqparse
-import traceback
-from flask import abort, jsonify, make_response, g
-from models import db
-from models import Seller, User, auth
-import json
-from flask import request
+from flask_restful import Resource, reqparse
+from flask import jsonify, g
+from models import auth
 parser = reqparse.RequestParser()
 
 

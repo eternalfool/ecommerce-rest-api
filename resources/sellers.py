@@ -1,15 +1,7 @@
-from flask_restful import Resource
 from sqlalchemy.exc import SQLAlchemyError
-from flask_restful import Api
-from flask_restful import Resource
-from sqlalchemy.exc import SQLAlchemyError
-from flask_restful import Api
+from flask import g
 from flask_restful import Resource, marshal_with, fields, reqparse
-import traceback
-from flask import abort, jsonify, make_response, request
-from models import db
-from models import Seller, User, auth
-import json
+from models import Seller, User, auth, db
 import logging
 
 output_fields = {
@@ -64,7 +56,8 @@ class Sellers(Resource):
         return {"isSuccessful": True}
 
     def post(self):
-        print "In seller post"
+        logger.debug("in post of create seller")
+        logger.debug("info : in post of create seller")
         parser.add_argument('id', type=int, location='json')
         parser.add_argument('name', type=str, location='json')
         parser.add_argument('contact_name', type=str, location='json')
@@ -94,15 +87,21 @@ class Sellers(Resource):
             return {"id": seller.id, "isSuccessful": True}, 202
         except SQLAlchemyError as e:
             db.session.rollback()
+            logger.info("ggwp")
             logger.exception("Error while creating seller")
             return {"error": str(e), "isSuccessful": False}, 401
 
+    @auth.login_required
     def update_seller(self, id, args):
         try:
             seller = Seller.query.get(id)
             if not seller:
-                return {"error": "No product with id = %s" % id,
+                return {"error": "No seller with id = %s" % id,
                         "isSuccessful": False}, 401
+            # If a seller is trying to update another seller
+            if id != g.seller.id and not g.is_admin:
+                return {"error": "you don't have permission to update this seller"
+                        , "isSuccessful": False}, 401
             for key, value in args.items():
                 if value:
                     setattr(seller, key, value)

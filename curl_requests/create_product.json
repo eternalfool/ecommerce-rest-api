@@ -1,0 +1,13 @@
+{
+	"name": "Lifebouy",
+	"description1": "Tandarusti ki raksha karta hai lifebouy",
+	"description2": "Lifebouy hai jahan tandarusti hai wahan",
+	"sku_id": "SKU-86e467-UKS",
+	"price": "99.95",
+	"image_urls": "['http://www.lifebuoy.co.za/Resources/Images/logo.gif']",
+	"video_urls": "['https://www.youtube.com/watch?v=VsnP_6kdtDY', 'https://www.youtube.com/watch?v=AOU3ZIrUiVM']",
+	"discount": "7.50",
+	"coupons": "['WNG50', 'FP40']",
+	"available_colors": "['RED', '0x454']",
+	"weight": "45.76 gms"
+}
