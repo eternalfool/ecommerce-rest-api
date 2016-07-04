@@ -98,20 +98,25 @@ class RoleType(db.Model):
 def verify_password(username_or_token, password):
     # first try to authenticate by token
     g.is_admin = False
-    user = User.verify_auth_token(username_or_token)
-    if not user:
-        # try to authenticate with username/password
-        user = User.query.filter_by(username=username_or_token).first()
-        if not user or not user.verify_password(password):
+    try:
+        user = User.verify_auth_token(username_or_token)
+        if not user:
+            # try to authenticate with username/password
+            user = User.query.filter_by(username=username_or_token).first()
+            if not user or not user.verify_password(password):
+                return False
+        g.user = user
+        # is user is admin, return true
+        admin_role_id = RoleType.query.filter_by(role="ADMIN").first().id
+        if user.role_type_id == admin_role_id:
+            g.is_admin = True
+            return True
+        seller = Seller.query.filter_by(user_id=user.id).first()
+        if not seller:
             return False
-    g.user = user
-    # is user is admin, return true
-    admin_role_id = RoleType.query.filter_by(role="ADMIN").first().id
-    if user.role_type_id == admin_role_id:
-        g.is_admin = True
-        return True
-    seller = Seller.query.filter_by(user_id=user.id).first()
-    if not seller:
-        return False
-    g.seller = seller
+        g.seller = seller
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        logger.exception(e)
+        return {"isSuccessful": False, "error": str(e)}, 401
     return True
