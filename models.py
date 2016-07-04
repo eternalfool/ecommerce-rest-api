@@ -14,6 +14,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] ='mysql://bb3b44179051f6:d239bffa@us-cdbr-
 app.config['SECRET_KEY'] = "NotSoSecret"
 app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['SQLALCHEMY_POOL_RECYCLE'] = 3600 * 8
 
 logger = logging.getLogger(__name__)
 
