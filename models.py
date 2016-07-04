@@ -16,8 +16,10 @@ app.config[
 app.config['SECRET_KEY'] = "NotSoSecret"
 app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config['SQLALCHEMY_POOL_RECYCLE'] = 3600 * 8
-app.config['SQLALCHEMY_POOL_TIMEOUT'] = 20
+# app.config['SQLALCHEMY_POOL_RECYCLE'] = 280
+# app.config['SQLALCHEMY_POOL_TIMEOUT'] = 20
+app.config['SQLALCHEMY_POOL_SIZE'] = 100
+
 
 logger = logging.getLogger(__name__)
 
