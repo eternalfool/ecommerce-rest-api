@@ -9,7 +9,7 @@ import logging
 app = Flask(__name__)
 db = SQLAlchemy(app)
 auth = HTTPBasicAuth()
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/test_ecommerce_db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/test_ecommerce_db'
 app.config['SECRET_KEY'] = "NotSoSecret"
 app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = False
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
