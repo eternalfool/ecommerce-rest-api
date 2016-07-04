@@ -83,7 +83,7 @@ class Sellers(Resource):
             logger.exception("Error while creating seller")
             return {"error": str(e), "isSuccessful": False}, 401
         finally:
-             session.close()
+             db.session.close()
 
     @auth.login_required
     def update_seller(self, id, args):
@@ -107,4 +107,4 @@ class Sellers(Resource):
             logger.exception("Error while updating seller")
             return {"error": str(e), "isSuccessful": False}, 401
         finally:
-             session.close()
+             db.session.close()

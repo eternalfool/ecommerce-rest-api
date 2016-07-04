@@ -103,7 +103,7 @@ class Products(Resource):
             logger.error(e)
             return {"isSuccessful": False, "error": str(e)}, 401
         finally:
-             session.close()
+             db.session.close()
 
         return {"id": id, "isSuccessful": True}, 202
 
@@ -131,7 +131,7 @@ class Products(Resource):
             logger.error(e)
             return {"error": str(e), "isSuccessful": False}, 401
         finally:
-             session.close()
+             db.session.close()
         return {"id": id, "isSuccessful": True}
 
     @auth.login_required
@@ -190,4 +190,4 @@ class Products(Resource):
             logger.error(e)
             return {"error": str(e), "isSuccessful": False}, 401
         finally:
-             session.close()
+             db.session.close()
