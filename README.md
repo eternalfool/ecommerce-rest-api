@@ -175,7 +175,7 @@ Response:
 		"sku_id": "SKU-96ghi7-UKS",
 		"video_urls": "['https://www.youtube.com/watch?v=iiGAPr9Vl0U']",
 		"weight": "75.46 gms"
-	}]
+	    }]
     }
     
 **Delete a product**
