@@ -5,7 +5,7 @@ import logging.config
 # default config
 class BaseConfig(object):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'mysql://bb3b44179051f6:d239bffa@us-cdbr-iron-east-04.cleardb.net/heroku_ec028af4a8b795d/ecommerce_db'
+    SQLALCHEMY_DATABASE_URI = 'mysql://bb3b44179051f6:d239bffa@us-cdbr-iron-east-04.cleardb.net/heroku_ec028af4a8b795d'
     SECRET_KEY = 'eyJhbGciOiJIUzI1NiIsImV4cCI6MTQ2NzE0OTE4OCwiaWF0IjoxNDY3MTQ4NTg'
 
 
