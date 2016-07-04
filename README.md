@@ -18,6 +18,12 @@ Ecommerce-rest-api is an authenticated rest api which supports CRUD operation of
 ### Deployment
 The app is deployed on [https://ecommerce-rest-api.herokuapp.com](https://ecommerce-rest-api.herokuapp.com)
 
+### Summary
+- A seller can create, read, update and delete his own products.
+- An Admin can create, read, update and delete all products.
+- Requests are authenticated on the basis of tokens.
+- Tokens have a life of one hour.
+
 ### Tech
 
 Dillinger uses a number of open source projects to work properly:
@@ -170,8 +176,7 @@ Response:
 		"video_urls": "['https://www.youtube.com/watch?v=iiGAPr9Vl0U']",
 		"weight": "75.46 gms"
 	}]
-}
-    
+    }
     
 **Delete a product**
 
@@ -180,54 +185,6 @@ Response:
 Response:
 
     { "id": 44, "isSuccessful": true}
-
-### Development
-
-Want to contribute? Great!
-
-Dillinger uses Gulp + Webpack for fast developing.
-Make a change in your file and instantanously see your updates!
-
-Open your favorite Terminal and run these commands.
-
-First Tab:
-```sh
-$ node app
-```
-
-Second Tab:
-```sh
-$ gulp watch
-```
-
-(optional) Third:
-```sh
-$ karma start
-```
-### Docker
-Dillinger is very easy to install and deploy in a Docker container.
-
-By default, the Docker will expose port 80, so change this within the Dockerfile if necessary. When ready, simply use the Dockerfile to build the image.
-
-```sh
-cd dillinger
-docker build -t <youruser>/dillinger:latest .
-```
-This will create the dillinger image and pull in the necessary dependencies. Once done, run the Docker and map the port to whatever you wish on your host. In this example, we simply map port 80 of the host to port 80 of the Docker (or whatever port was exposed in the Dockerfile):
-
-```sh
-docker run -d -p 80:80 --restart="always" <youruser>/dillinger:latest
-```
-
-Verify the deployment by navigating to your server address in your preferred browser.
-
-### N|Solid and NGINX
-
-More details coming soon.
-
-#### docker-compose.yml
-
-Change the path for the nginx conf mounting path to your full path, not mine!
 
 ### Todos
  - Read log configurations from a file.
@@ -245,5 +202,6 @@ Change the path for the nginx conf mounting path to your full path, not mine!
    [Mysql]: <https://www.mysql.com/>
    [Sqlalchemy]: <http://www.sqlalchemy.org/>
    [@thomasfuchs]: <http://twitter.com/thomasfuchs>
+
 
 
