@@ -1,2 +1,2 @@
-curl -u admin:admin "http://0.0.0.0:5000/products"
+curl -u admin:admin "https://ecommerce-rest-api.herokuapp.com/products"
 

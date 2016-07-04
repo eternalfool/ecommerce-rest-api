@@ -1,2 +1,2 @@
-curl -u shashwat:shashwat "http://0.0.0.0:5000/token"
+curl -u shashwat:shashwat "https://ecommerce-rest-api.herokuapp.com/token"
 

@@ -15,6 +15,9 @@ Ecommerce-rest-api is an authenticated rest api which supports CRUD operation of
 | POST | /products      |    update |    updating an existing product specifying id |
 | DELETE | /products      |    delete |    delete product specifying id |
 
+### Deployment
+The app is deployed on [https://ecommerce-rest-api.herokuapp.com](https://ecommerce-rest-api.herokuapp.com)
+
 ### Tech
 
 Dillinger uses a number of open source projects to work properly:
@@ -59,7 +62,7 @@ python run.py
 
 **Post request to /sellers to create a new seller**
 
-    curl http://0.0.0.0:5000/sellers -j -H "Content-Type: application/json" --data '{"username": "shashwat", "password":"shashwat", "name": "brotherNero"}'
+    curl http://ecommerce-rest-api.herokuapp.com/sellers -j -H "Content-Type: application/json" --data '{"username": "shashwat", "password":"shashwat", "name": "brotherNero"}'
 
 Response:
 
@@ -67,7 +70,7 @@ Response:
 
 **Get api-token for the seller**
 
-    curl -u shashwat:shashwat "http://0.0.0.0:5000/token"
+    curl -u shashwat:shashwat "http://ecommerce-rest-api.herokuapp.com/token"
 
 
 ***Note:*** Passing just the username without the colon (`:`) will cause you to be prompted for your account password. This avoids having your password in your command line history
@@ -78,7 +81,7 @@ Response:
 
 **Make a post request to create a new product**
 
-    curl -X POST -H "Content-Type: application/json" -u shashwat:shashwat -d @./create_product.json "http://0.0.0.0:5000/products" 
+    curl -X POST -H "Content-Type: application/json" -u shashwat:shashwat -d @./create_product.json "http://ecommerce-rest-api.herokuapp.com/products" 
 
 ***Contents of create_product.json***
 
@@ -102,7 +105,7 @@ Response:
 
 **Make a post request update an existing product**
 
-    curl -X POST -H "Content-Type: application/json" -u shashwat:shashwat -d @./update_product.json "http://0.0.0.0:5000/products" 
+    curl -X POST -H "Content-Type: application/json" -u shashwat:shashwat -d @./update_product.json "http://ecommerce-rest-api.herokuapp.com/products" 
 
 ***Contents of update_product.json***
 
@@ -127,7 +130,7 @@ Response:
     
 **Get request to get product details**
 
-    curl -u shashwat:shashwat "http://0.0.0.0:5000/products"
+    curl -u shashwat:shashwat "http://ecommerce-rest-api.herokuapp.com/products"
 
 Response:
 
@@ -172,7 +175,7 @@ Response:
     
 **Delete a product**
 
-    curl -X DELETE -u shashwat:shashwat "http://0.0.0.0:5000/products?id=41" 
+    curl -X DELETE -u shashwat:shashwat "http://ecommerce-rest-api.herokuapp.com/products?id=41" 
 
 Response:
 
@@ -232,6 +235,7 @@ Change the path for the nginx conf mounting path to your full path, not mine!
  - bulk creation / deletion of products.
  - add more information to unauthorized requests (get token by invalid username, duplicate username while creating seller)
  - Write negative test cases.
+ - Make deployment of db automated using sqlalchemy
 
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)

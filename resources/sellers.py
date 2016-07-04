@@ -70,7 +70,6 @@ class Sellers(Resource):
             return {"id": seller.id, "isSuccessful": True}, 202
         except SQLAlchemyError as e:
             db.session.rollback()
-            logger.info("ggwp")
             logger.exception("Error while creating seller")
             return {"error": str(e), "isSuccessful": False}, 401
 

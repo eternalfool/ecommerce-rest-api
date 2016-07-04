@@ -143,8 +143,6 @@ class TestProducts(TestCase):
                product1.weight == product2.weight
 
     def tearDown(self):
-        # db.session.remove()
-        # db.drop_all()
         pass
 
 # runs the unit tests in the module
