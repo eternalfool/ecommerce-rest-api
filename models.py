@@ -119,5 +119,5 @@ def verify_password(username_or_token, password):
     except SQLAlchemyError as e:
         db.session.rollback()
         logger.exception(e)
-        return {"isSuccessful": False, "error": str(e)}, 401
+        return False
     return True
