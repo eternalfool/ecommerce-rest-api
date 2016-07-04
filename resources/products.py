@@ -1,8 +1,7 @@
 from sqlalchemy.exc import SQLAlchemyError
 from flask_restful import Resource, marshal_with, fields, reqparse, request
-from flask import jsonify, g
-from models import db, auth
-from models import Product
+from flask import g
+from models import db, auth, Product
 import logging
 
 logger = logging.getLogger(__name__)
@@ -34,9 +33,17 @@ parser = reqparse.RequestParser()
 # parser.add_argument('offset', type=int)
 
 class Products(Resource):
+    """
+    A view of Product with CRUD operations.
+    """
     @auth.login_required
     @marshal_with(product_fields, envelope='data')
     def get(self):
+        """
+        Gets all products of seller.
+        If the id is mentioned then only get product by id.
+        :return: array of products
+        """
         parser.add_argument('id', type=int, location='args')
         parser.add_argument('include_inactive', type=bool, location='args')
         args = parser.parse_args()
@@ -74,6 +81,13 @@ class Products(Resource):
 
     @auth.login_required
     def update_product(self, id, args):
+        """
+        updates product with the given params
+        :param id: product_id
+        :param args: params passed to update
+        :return: if successful: True and product_id.
+                 if failed: False and error string.
+        """
         product_to_be_updated = Product.query.get(id)
         if not product_to_be_updated:
             return {"isSuccessful": False, "error": "No product with id = %s" % id}, 401
@@ -93,6 +107,11 @@ class Products(Resource):
 
     @auth.login_required
     def delete(self):
+        """
+        :param id: product_id
+        :return: if successful: True and product_id.
+                 if failed: False and error string.
+        """
         parser.add_argument('id', type=int, location='args', required=True,
                             help='You must specify the product_id to delete')
         args = parser.parse_args()
@@ -109,10 +128,16 @@ class Products(Resource):
             db.session.rollback()
             logger.error(e)
             return {"error": str(e), "isSuccessful": False}, 401
-        return { "id": id, "isSuccessful": True}
+        return {"id": id, "isSuccessful": True}
 
     @auth.login_required
     def post(self):
+        """
+        Acts as a create_product if id is not mentioned.
+        If the product_id is mention it updates the product with the given params.
+        :return: if successful: True and product_id.
+                 if failed: False and error string.
+        """
         logger.debug(request.data)
         parser.add_argument('id', type=int, location='json')
         parser.add_argument('name', type=str, location='json')
@@ -135,6 +160,12 @@ class Products(Resource):
             return self.create_product(args)
 
     def create_product(self, args):
+        """
+            creates product with the given params
+            :param args: params passed to update
+            :return: if successful: True and product_id.
+                     if failed: False and error string.
+        """
         if args['name'] is None:
             return {"isSuccessful": False, "error": "You must specify the name"}, 401
         product = Product(name=args['name'], seller_id=args['seller_id'],

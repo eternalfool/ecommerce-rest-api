@@ -20,9 +20,15 @@ parser = reqparse.RequestParser()
 
 
 class Sellers(Resource):
+    """
+    A view of Seller with CRUD operations.
+    """
     @auth.login_required
     @marshal_with(output_fields)
     def get(self):
+        """
+        Get seller info
+        """
         parser.add_argument('id', type=int, location='args')
         parser.add_argument('include_inactive', type=bool, location='args')
         args = parser.parse_args()
@@ -39,6 +45,10 @@ class Sellers(Resource):
         return sellers
 
     def post(self):
+        """
+        Create or update an existing seller.
+        Update if triggered if the seller_id is passed.
+        """
         logger.debug("in post of create seller")
         logger.debug("info : in post of create seller")
         parser.add_argument('id', type=int, location='json')
