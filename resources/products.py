@@ -102,6 +102,8 @@ class Products(Resource):
             db.session.rollback()
             logger.error(e)
             return {"isSuccessful": False, "error": str(e)}, 401
+        finally:
+             session.close()
 
         return {"id": id, "isSuccessful": True}, 202
 
@@ -128,6 +130,8 @@ class Products(Resource):
             db.session.rollback()
             logger.error(e)
             return {"error": str(e), "isSuccessful": False}, 401
+        finally:
+             session.close()
         return {"id": id, "isSuccessful": True}
 
     @auth.login_required
@@ -185,3 +189,5 @@ class Products(Resource):
             db.session.rollback()
             logger.error(e)
             return {"error": str(e), "isSuccessful": False}, 401
+        finally:
+             session.close()
