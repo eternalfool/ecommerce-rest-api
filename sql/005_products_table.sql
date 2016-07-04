@@ -1,4 +1,4 @@
-use ecommerce_db;
+use heroku_ec028af4a8b795d;
 
 create table products
 (
@@ -24,6 +24,7 @@ create table products
 ALTER TABLE products ADD COLUMN creation_date DATETIME;
 ALTER TABLE products ADD COLUMN last_update DATETIME;
 ALTER TABLE products ADD COLUMN last_updated_by VARCHAR(150);
+/*
 delimiter //
 CREATE TRIGGER products_insert_trigger BEFORE INSERT ON products
 FOR EACH ROW BEGIN
@@ -36,4 +37,4 @@ FOR EACH ROW BEGIN
     SET NEW.last_updated_by = USER();
     SET NEW.last_update  =  NOW();
 END;//
-delimiter ;
+delimiter ;*/

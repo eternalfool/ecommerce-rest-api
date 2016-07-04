@@ -1,4 +1,4 @@
-use ecommerce_db;
+use heroku_ec028af4a8b795d;
 
 create table users
 (
@@ -16,7 +16,7 @@ create table users
 ALTER TABLE users ADD COLUMN creation_date DATETIME;
 ALTER TABLE users ADD COLUMN last_update DATETIME;
 ALTER TABLE users ADD COLUMN last_updated_by VARCHAR(150);
-delimiter //
+/*delimiter //
 CREATE TRIGGER users_insert_trigger BEFORE INSERT ON users
 FOR EACH ROW BEGIN
     SET NEW.creation_date = NOW();

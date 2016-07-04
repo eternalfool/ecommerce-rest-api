@@ -1,4 +1,4 @@
-use ecommerce_db;
+use heroku_ec028af4a8b795d;
 
 create table role_types
 (
@@ -25,6 +25,3 @@ FOR EACH ROW BEGIN
 END;//
 delimiter ;
 
-
-INSERT INTO role_types(role) VALUES("SELLER");
-INSERT INTO role_types(role) VALUES("ADMIN");
