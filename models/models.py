@@ -11,6 +11,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.declarative import declarative_base
 import logging
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, Text, ForeignKey
+import sys, traceback
 
 auth = HTTPBasicAuth()
 logger = logging.getLogger(__name__)
@@ -139,6 +140,8 @@ def verify_password(username_or_token, password):
         g.seller = seller
     except SQLAlchemyError as e:
         session.rollback()
+        print e
+        traceback.print_exc()
         logger.exception(e)
         raise e
     return True
