@@ -1,8 +1,10 @@
-from sqlalchemy.exc import SQLAlchemyError
-from flask_restful import Resource, marshal_with, fields, reqparse, request
-from flask import g
-from models import db, auth, Product
 import logging
+
+from flask import g
+from flask_restful import Resource, marshal_with, fields, reqparse, request
+from sqlalchemy.exc import SQLAlchemyError
+
+from models.models import db, auth, Product
 
 logger = logging.getLogger(__name__)
 

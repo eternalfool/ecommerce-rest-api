@@ -1,10 +1,10 @@
 import sys
-import os
+
 sys.path.append('..')
 from flask_testing import TestCase
 import unittest
 from run import app
-from models import Product
+from models.models import Product
 import json
 import time
 from common.utils import get_auth_headers

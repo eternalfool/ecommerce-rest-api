@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 
 import sys
-import os
+
 sys.path.append('..')
 from flask_testing import TestCase
-from base64 import b64encode
 from run import app
-from models import User, db, Seller
+from models.models import Seller
 import json
 import time
 from common.utils import get_auth_headers

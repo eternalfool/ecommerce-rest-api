@@ -1,8 +1,10 @@
-from sqlalchemy.exc import SQLAlchemyError
+import logging
+
 from flask import g
 from flask_restful import Resource, marshal_with, fields, reqparse
-from models import Seller, User, auth, db
-import logging
+from sqlalchemy.exc import SQLAlchemyError
+
+from models.models import Seller, User, auth, db
 
 output_fields = {
     'id': fields.Integer,
@@ -107,4 +109,4 @@ class Sellers(Resource):
             logger.exception("Error while updating seller")
             return {"error": str(e), "isSuccessful": False}, 401
         finally:
-             db.session.close()
+            db.session.close()

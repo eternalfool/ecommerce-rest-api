@@ -1,6 +1,8 @@
-from flask_restful import Resource, reqparse
 from flask import jsonify, g
-from models import auth
+from flask_restful import Resource, reqparse
+
+from models.models import auth
+
 parser = reqparse.RequestParser()
 
 

@@ -1,9 +1,6 @@
 from flask import Flask
 from flask_restful import Api
-
-from resources.sellers import Sellers
-from resources.products import Products
-from resources.tokens import Tokens
+from flask_sqlalchemy import SQLAlchemy
 import logging
 import config
 
@@ -21,9 +18,25 @@ app = Flask(__name__)
 api = Api(app)
 
 logger.info("Registering resources")
+
+from resources.sellers import Sellers
+from resources.products import Products
+from resources.tokens import Tokens
+
 api.add_resource(Sellers, '/sellers')
 api.add_resource(Products, '/products')
 api.add_resource(Tokens, '/token')
 
+
+app.config[
+    'SQLALCHEMY_DATABASE_URI'] = 'mysql://bb3b44179051f6:d239bffa@us-cdbr-iron-east-04' \
+                                 '.cleardb.net/heroku_ec028af4a8b795d'
+app.config['SECRET_KEY'] = "NotSoSecret"
+app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+# app.config['SQLALCHEMY_POOL_RECYCLE'] = 280
+# app.config['SQLALCHEMY_POOL_TIMEOUT'] = 20
+app.config['SQLALCHEMY_POOL_SIZE'] = 100
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True, threaded=True)
