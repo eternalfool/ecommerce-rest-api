@@ -18,7 +18,8 @@ app = Flask(__name__)
 Base = declarative_base()
 
 engine = create_engine(
-    'mysql://bb3b44179051f6:d239bffa@us-cdbr-iron-east-04clearnet/heroku_ec028af4a8b795d')
+    'mysql://bb3b44179051f6:d239bffa@us-cdbr-iron-east-04cleardb.net'
+    '/heroku_ec028af4a8b795d')
 Base.metadata.create_all(engine, checkfirst=True)
 Session = sessionmaker(bind=engine)
 session = Session()
