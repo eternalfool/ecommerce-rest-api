@@ -1,4 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
-from run import app
 
-db = SQLAlchemy(app)
+db = None
+
+
+def init(app):
+    global db
+    db = SQLAlchemy(app)

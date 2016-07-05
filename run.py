@@ -6,6 +6,7 @@ import config
 from resources.sellers import Sellers
 from resources.products import Products
 from resources.tokens import Tokens
+import database
 
 # config.configure_logging_relative('logging.ini')
 
@@ -20,6 +21,7 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 api = Api(app)
 app.config.from_object('config.BaseConfig')
+database.init(app)
 logger.info("Registering resources")
 
 
