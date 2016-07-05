@@ -5,10 +5,12 @@ from flask_httpauth import HTTPBasicAuth
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
 from sqlalchemy.exc import SQLAlchemyError
+from database import db
 import logging
 
 app = Flask(__name__)
-db = SQLAlchemy(app)
+# db = SQLAlchemy(app)
+
 auth = HTTPBasicAuth()
 app.config[
     'SQLALCHEMY_DATABASE_URI'] = 'mysql://bb3b44179051f6:d239bffa@us-cdbr-iron-east-04' \
