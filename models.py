@@ -6,8 +6,8 @@ from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
 from sqlalchemy.exc import SQLAlchemyError
 import logging
+from run import app
 
-app = Flask(__name__)
 db = SQLAlchemy(app)
 auth = HTTPBasicAuth()
 app.config[
