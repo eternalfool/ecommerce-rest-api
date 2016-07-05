@@ -3,10 +3,14 @@ from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 import logging
 import config
+import database
+app = Flask(__name__)
+api = Api(app)
+app.config.from_object('config.BaseConfig')
+database.init(app)
 from resources.sellers import Sellers
 from resources.products import Products
 from resources.tokens import Tokens
-import database
 
 # config.configure_logging_relative('logging.ini')
 
@@ -18,10 +22,6 @@ logging.basicConfig(filename="ecommerce.log",
 
 logger = logging.getLogger(__name__)
 
-app = Flask(__name__)
-api = Api(app)
-app.config.from_object('config.BaseConfig')
-database.init(app)
 logger.info("Registering resources")
 
 
