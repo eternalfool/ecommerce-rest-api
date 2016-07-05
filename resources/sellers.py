@@ -4,7 +4,8 @@ from flask import g
 from flask_restful import Resource, marshal_with, fields, reqparse
 from sqlalchemy.exc import SQLAlchemyError
 
-from models.models import Seller, User, auth, db
+from models.models import Seller, User, auth
+from database import db
 
 output_fields = {
     'id': fields.Integer,
