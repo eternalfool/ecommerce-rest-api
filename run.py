@@ -8,6 +8,7 @@ app = Flask(__name__)
 api = Api(app)
 app.config.from_object('config.BaseConfig')
 database.init(app)
+
 from resources.sellers import Sellers
 from resources.products import Products
 from resources.tokens import Tokens

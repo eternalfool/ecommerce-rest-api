@@ -8,7 +8,8 @@ from sqlalchemy.exc import SQLAlchemyError
 from database import db
 import logging
 
-app = Flask(__name__)
+# app = Flask(__name__)
+from run import app
 # db = SQLAlchemy(app)
 
 auth = HTTPBasicAuth()
