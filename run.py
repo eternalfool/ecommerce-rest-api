@@ -3,6 +3,9 @@ from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 import logging
 import config
+from resources.sellers import Sellers
+from resources.products import Products
+from resources.tokens import Tokens
 
 # config.configure_logging_relative('logging.ini')
 
@@ -19,9 +22,6 @@ api = Api(app)
 app.config.from_object('config.BaseConfig')
 logger.info("Registering resources")
 
-from resources.sellers import Sellers
-from resources.products import Products
-from resources.tokens import Tokens
 
 api.add_resource(Sellers, '/sellers')
 api.add_resource(Products, '/products')
