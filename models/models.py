@@ -21,7 +21,7 @@ engine = create_engine(
     'mysql://bb3b44179051f6:d239bffa@us-cdbr-iron-east-04.cleardb.net/heroku_ec028af4a8b795d')
 Session = sessionmaker(bind=engine)
 session = Session()
-
+app.config['SECRET_KEY'] = "NotSoSecret"
 
 # db = SQLAlchemy(app)
 # app.config[

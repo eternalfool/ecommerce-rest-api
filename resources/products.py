@@ -55,29 +55,32 @@ class Products(Resource):
         # user is Admin
         if g.is_admin:
             if product_id and include_inactive:
-                products = Product.query.filter_by(id=product_id).all()
+                # products = Product.query.filter_by(id=product_id).all()
+                products = session.query(Product).filter_by(id=product_id).all()
             elif product_id and not include_inactive:
-                products = Product.query.filter_by(id=product_id).filter(
+                # products = Product.query.filter_by(id=product_id).filter(
+                #     Product.is_active).all()
+                products = session.query(Product).filter_by(id=product_id).filter(
                     Product.is_active).all()
             elif not product_id and include_inactive:
-                products = Product.query.filter(Product.is_active).all()
+                products = session.query(Product).filter(Product.is_active).all()
             else:
                 # not product_id and not include_inactive:
-                products = Product.query.all()
+                products = session.query(Product).all()
         else:  # user is not admin
             seller_id = g.seller.id
             if product_id and include_inactive:
-                products = Product.query.filter_by(id=product_id).filter_by(
+                products = session.query(Product).filter_by(id=product_id).filter_by(
                     seller_id=seller_id).all()
             elif product_id and not include_inactive:
-                products = Product.query.filter_by(id=product_id).filter_by(
+                products = session.query(Product).filter_by(id=product_id).filter_by(
                     seller_id=seller_id).filter(
                     Product.is_active).all()
             elif not product_id and include_inactive:
-                products = Product.query.filter_by(seller_id=seller_id).all()
+                products = session.query(Product).filter_by(seller_id=seller_id).all()
             else:
                 # not product_id and not include_inactive
-                products = Product.query.filter(Product.is_active).filter_by(
+                products = session.query(Product).filter(Product.is_active).filter_by(
                     seller_id=seller_id).all()
         return products
 
@@ -90,7 +93,7 @@ class Products(Resource):
         :return: if successful: True and product_id.
                  if failed: False and error string.
         """
-        product_to_be_updated = Product.query.get(id)
+        product_to_be_updated = session.query(Product).get(id)
         if not product_to_be_updated:
             return {"isSuccessful": False, "error": "No product with id = %s" % id}, 401
         if product_to_be_updated.seller_id != g.seller.id:
@@ -120,7 +123,7 @@ class Products(Resource):
                             help='You must specify the product_id to delete')
         args = parser.parse_args()
         id = args['id']
-        product_to_be_updated = Product.query.get(id)
+        product_to_be_updated = session.query(Product).get(id)
         if not product_to_be_updated:
             return {"error": "No product with id = %s" % id, "isSuccessful": False}, 401
         if product_to_be_updated.seller_id != g.seller.id:
