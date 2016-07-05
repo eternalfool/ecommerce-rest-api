@@ -3,8 +3,8 @@ import logging
 from flask import g
 from flask_restful import Resource, marshal_with, fields, reqparse, request
 from sqlalchemy.exc import SQLAlchemyError
-from models.models import session
-from models.models import auth, Product
+
+from models.models import db, auth, Product
 
 logger = logging.getLogger(__name__)
 
@@ -55,32 +55,29 @@ class Products(Resource):
         # user is Admin
         if g.is_admin:
             if product_id and include_inactive:
-                # products = Product.query.filter_by(id=product_id).all()
-                products = session.query(Product).filter_by(id=product_id).all()
+                products = Product.query.filter_by(id=product_id).all()
             elif product_id and not include_inactive:
-                # products = Product.query.filter_by(id=product_id).filter(
-                #     Product.is_active).all()
-                products = session.query(Product).filter_by(id=product_id).filter(
+                products = Product.query.filter_by(id=product_id).filter(
                     Product.is_active).all()
             elif not product_id and include_inactive:
-                products = session.query(Product).filter(Product.is_active).all()
+                products = Product.query.filter(Product.is_active).all()
             else:
                 # not product_id and not include_inactive:
-                products = session.query(Product).all()
+                products = Product.query.all()
         else:  # user is not admin
             seller_id = g.seller.id
             if product_id and include_inactive:
-                products = session.query(Product).filter_by(id=product_id).filter_by(
+                products = Product.query.filter_by(id=product_id).filter_by(
                     seller_id=seller_id).all()
             elif product_id and not include_inactive:
-                products = session.query(Product).filter_by(id=product_id).filter_by(
+                products = Product.query.filter_by(id=product_id).filter_by(
                     seller_id=seller_id).filter(
                     Product.is_active).all()
             elif not product_id and include_inactive:
-                products = session.query(Product).filter_by(seller_id=seller_id).all()
+                products = Product.query.filter_by(seller_id=seller_id).all()
             else:
                 # not product_id and not include_inactive
-                products = session.query(Product).filter(Product.is_active).filter_by(
+                products = Product.query.filter(Product.is_active).filter_by(
                     seller_id=seller_id).all()
         return products
 
@@ -93,7 +90,7 @@ class Products(Resource):
         :return: if successful: True and product_id.
                  if failed: False and error string.
         """
-        product_to_be_updated = session.query(Product).get(id)
+        product_to_be_updated = Product.query.get(id)
         if not product_to_be_updated:
             return {"isSuccessful": False, "error": "No product with id = %s" % id}, 401
         if product_to_be_updated.seller_id != g.seller.id:
@@ -102,13 +99,13 @@ class Products(Resource):
             if value:
                 setattr(product_to_be_updated, key, value)
         try:
-            session.commit()
+            db.session.commit()
         except SQLAlchemyError as e:
-            session.rollback()
+            db.session.rollback()
             logger.error(e)
             return {"isSuccessful": False, "error": str(e)}, 401
         finally:
-            session.close()
+             db.session.close()
 
         return {"id": id, "isSuccessful": True}, 202
 
@@ -123,20 +120,20 @@ class Products(Resource):
                             help='You must specify the product_id to delete')
         args = parser.parse_args()
         id = args['id']
-        product_to_be_updated = session.query(Product).get(id)
+        product_to_be_updated = Product.query.get(id)
         if not product_to_be_updated:
             return {"error": "No product with id = %s" % id, "isSuccessful": False}, 401
         if product_to_be_updated.seller_id != g.seller.id:
             return {"isSuccessful": False, "error": "Unauthorized access"}, 401
         product_to_be_updated.is_active = False
         try:
-            session.commit()
+            db.session.commit()
         except SQLAlchemyError as e:
-            session.rollback()
+            db.session.rollback()
             logger.error(e)
             return {"error": str(e), "isSuccessful": False}, 401
         finally:
-            session.close()
+             db.session.close()
         return {"id": id, "isSuccessful": True}
 
     @auth.login_required
@@ -187,12 +184,12 @@ class Products(Resource):
                           available_colors=args['available_colors'],
                           weight=args['weight'])
         try:
-            session.add(product)
-            session.commit()
+            db.session.add(product)
+            db.session.commit()
             return {"id": product.id, "isSuccessful": True}, 202
         except SQLAlchemyError as e:
-            session.rollback()
+            db.session.rollback()
             logger.error(e)
             return {"error": str(e), "isSuccessful": False}, 401
         finally:
-            session.close()
+             db.session.close()

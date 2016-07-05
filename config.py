@@ -6,8 +6,7 @@ import logging.config
 class BaseConfig(object):
     DEBUG = False
     SQLALCHEMY_DATABASE_URI = os.getenv('CLEARDB_DATABASE_URL')
-    SQLALCHEMY_DATABASE_URI = 'mysql://bb3b44179051f6:d239bffa@us-cdbr-iron-east-04' \
-                              '.cleardb.net/heroku_ec028af4a8b795d'
+    SQLALCHEMY_DATABASE_URI = 'mysql://bb3b44179051f6:d239bffa@us-cdbr-iron-east-04.cleardb.net/heroku_ec028af4a8b795d'
     SECRET_KEY = 'eyJhbGciOiJIUzI1NiIsImV4cCI6MTQ2NzE0OTE4OCwiaWF0IjoxNDY3MTQ4NTg'
 
 
@@ -15,8 +14,7 @@ class TestConfig(BaseConfig):
     DEBUG = True
     TESTING = True
     WTF_CSRF_ENABLED = False
-    SQLALCHEMY_DATABASE_URI = 'mysql://bb3b44179051f6:d239bffa@us-cdbr-iron-east-04' \
-                              '.cleardb.net/heroku_ec028af4a8b795d'
+    SQLALCHEMY_DATABASE_URI = 'mysql://bb3b44179051f6:d239bffa@us-cdbr-iron-east-04.cleardb.net/heroku_ec028af4a8b795d'
     # SQLALCHEMY_DATABASE_URI = 'mysql://root:@localhost/ecommerce_db'
 
 
