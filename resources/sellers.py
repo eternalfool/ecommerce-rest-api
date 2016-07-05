@@ -4,7 +4,7 @@ from flask import g
 from flask_restful import Resource, marshal_with, fields, reqparse
 from sqlalchemy.exc import SQLAlchemyError
 
-from models.models import Seller, User, auth, db
+from models.models import Seller, User, auth, session
 
 output_fields = {
     'id': fields.Integer,
@@ -71,21 +71,21 @@ class Sellers(Resource):
         try:
             user = User(role_type_id=1, username=args['username'],
                         password_hash=User.hash_password(args['password']))
-            db.session.add(user)
-            db.session.commit()
+            session.add(user)
+            session.commit()
             seller = Seller(user_id=user.id, name=args['name'],
                             contact_name=args['contact_name'],
                             contact_number=args['contact_number'],
                             email_id=args['email_id'])
-            db.session.add(seller)
-            db.session.commit()
+            session.add(seller)
+            session.commit()
             return {"id": seller.id, "isSuccessful": True}, 202
         except SQLAlchemyError as e:
-            db.session.rollback()
+            session.rollback()
             logger.exception("Error while creating seller")
             return {"error": str(e), "isSuccessful": False}, 401
         finally:
-             db.session.close()
+            session.close()
 
     @auth.login_required
     def update_seller(self, id, args):
@@ -101,12 +101,12 @@ class Sellers(Resource):
             for key, value in args.items():
                 if value:
                     setattr(seller, key, value)
-            db.session.add(seller)
-            db.session.commit()
+            session.add(seller)
+            session.commit()
             return {"id": seller.id, "isSuccessful": True}, 202
         except SQLAlchemyError as e:
-            db.session.rollback()
+            session.rollback()
             logger.exception("Error while updating seller")
             return {"error": str(e), "isSuccessful": False}, 401
         finally:
-            db.session.close()
+            session.close()
