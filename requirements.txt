@@ -7,7 +7,7 @@ Flask-SQLAlchemy==2.1
 Flask-Testing==0.5.0
 gunicorn==19.6.0
 itsdangerous==0.24
-Jinja2==2.8
+Jinja2==2.11.3
 MarkupSafe==0.23
 msgpack-python==0.4.7
 MySQL-python==1.2.5
